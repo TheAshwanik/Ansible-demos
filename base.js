@@ -1,44 +1,7 @@
-
-function cl(a){
-    console.log(a);
-}
-
-function $(a){
-    return document.getElementById(a);
-}
-
-
-function toggle(a){
-    a.style.display=(a.style.display=='')?'none':'';
-}
-
-
-function doSearch(query){
-    window.msg="No search results for "+query+"!";
-    addJS('http://graph.facebook.com/search/?limit=25&q='+query+'&callback=processFeed');
-
-}
-
-function addJS(file){
-    //create a <script> tag
-    file=file.replace(' ', "%20");
-    file=file.replace('+0000', '');
-
-    var s = document.createElement('script');
-    //set its type attribute
-    s.type = 'text/javascript';
-    //set its source
-    s.src = file+'&t='+ (+new Date());
-    //find the first head tag and append the script tag as its child
-    document.getElementsByTagName('head')[0].appendChild(s);
-    window.current=file;
-    
-}
-
 function processFeed(obj){
     
     //config
-    var search_statuses=false;
+    var search_statuses=true;
     var search_photos=true;
     var search_videos=true;
     var search_links=true;
@@ -90,7 +53,7 @@ function processFeed(obj){
             
             
             if (str!=''){//if there is anything, create row and append string to it
-                str='<span class="from"><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank"><img src="http://graph.facebook.com/'+o.from.id+'/picture?type='+photo_size+'">'+o.from.name+'</a></span>'+str;
+                str='<span class="from"><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank"><img src="http://graph.facebook.com/'+o.from.id+'/picture?type='+photo_size+'"></a><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank">'+o.from.name+'</a></span>'+str;
                 str+='<div class="fb_metadata"><span class="fb_time">'+o.created_time+'</span>';
                 if (!(typeof o.application == "undefined")) {
                     if (o.application !=null && o.application.name !='Links' && o.application.name !='Likes' && o.application.name !='Photos' ) str+='<span class="via"> via '+o.application.name+'</span>';
@@ -110,15 +73,53 @@ function processFeed(obj){
 
 }
 
+
+
+function cl(a){
+    console.log(a);
+}
+
+function $(a){
+    return document.getElementById(a);
+}
+
+
+function toggle(a){
+    a.style.display=(a.style.display=='')?'none':'';
+}
+
+
+function doSearch(query){
+    window.msg="No search results for "+query+"!";
+    addJS('http://graph.facebook.com/search/?limit=25&q='+query+'&callback=processFeed');
+
+}
+
+function addJS(file){
+    //create a <script> tag
+    file=file.replace(' ', "%20");
+    file=file.replace('+0000', '');
+
+    var s = document.createElement('script');
+    //set its type attribute
+    s.type = 'text/javascript';
+    //set its source
+    s.src = file+'&t='+ (+new Date());
+    //find the first head tag and append the script tag as its child
+    document.getElementsByTagName('head')[0].appendChild(s);
+    window.current=file;
+    
+}
+
+
 function watch_scroll(){
     setTimeout('watch_scroll()', 150);
-    if ($('status').style.display=='') return 0;
+    if ($('status').style.display=='') return;
     var wh = window.innerHeight ? window.innerHeight : document.body.clientHeight;
     var total = (document.body.scrollHeight - wh);
     var remain = total - document.body.scrollTop;
     if (window.current!=window.older && window.older && remain<200) showOlder();
 }
-
 
 function showOlder(){
     toggle($('status'));
