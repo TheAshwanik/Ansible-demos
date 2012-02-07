@@ -53,7 +53,7 @@
         </style>
 
     </head>
-    <body onload="doSearch('The Beatles Arrive at JFK airport New York')">
+    <body onload="doSearch('kathmandu')">
         <script type="text/javascript" src="base.js"></script>
         <div id="search_header">
             Searching 
