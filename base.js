@@ -35,7 +35,7 @@ function processFeed(obj){
                 if (msg.length>100){
                     msg=msg.substr(0, 95)+'...';
                 }
-                str+='<a class="fb_message" href="'+o.link+'">'+msg+'</a>';
+                str+='<a class="fb_message" target="_blank" href="'+o.link+'">'+msg+'</a>';
             //
             }else if (search_videos && o.type=='video'){
                 //if (!(typeof o.message == "undefined")) str+='<span class="fb_message">'+o.message+'</span>';
@@ -44,7 +44,8 @@ function processFeed(obj){
                 var url=o.source;
                 //url = url.source.replace('autoplay=1','autoplay=0');
                 //str+='<iframe src="'+url+'"><a target="_blank" href="'+url+'"></a></iframe>'
-                str+='<a class="video_link" style="background: #fff url('+o.picture+');background-repeat:no-repeat;" target="_blank" href="'+o.link+'" onclick="this.removeChild(this.firstChild);this.innerHTML=\'<iframe width=400 height=265 src='+url+'></iframe>\';return false;"><img src="http://static.ak.fbcdn.net/rsrc.php/v1/yr/r/XXVvDYAks_i.png"></a>';
+                if (typeof o.picture == "undefined") o.picture='';//prevents undefined
+                str+='<a class="video_link" style="background: #fff url('+o.picture+');" target="_blank" href="'+o.link+'" onclick="this.removeChild(this.firstChild);this.innerHTML=\'<iframe width=400 height=265 src='+url+'></iframe>\';return false;"><img src="http://static.ak.fbcdn.net/rsrc.php/v1/yr/r/XXVvDYAks_i.png"></a>';
                 str+='<b>Video: </b>';        
                 if (!(typeof o.name == "undefined"))  str+='<span class="fb_name">'+o.name+'</span>';
             }else if (search_statuses && o.type=='status'){
@@ -53,7 +54,7 @@ function processFeed(obj){
             
             
             if (str!=''){//if there is anything, create row and append string to it
-                str='<span class="from"><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank"><img src="http://graph.facebook.com/'+o.from.id+'/picture?type='+photo_size+'"></a><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank">'+o.from.name+'</a></span>'+str;
+                str='<span class="from"><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank"><img src="http://graph.facebook.com/'+o.from.id+'/picture?type='+photo_size+'"></a><a class="name" href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank">'+o.from.name+'</a></span>'+str;
                 str+='<div class="fb_metadata"><span class="fb_time">'+o.created_time+'</span>';
                 if (!(typeof o.application == "undefined")) {
                     if (o.application !=null && o.application.name !='Links' && o.application.name !='Likes' && o.application.name !='Photos' ) str+='<span class="via"> via '+o.application.name+'</span>';

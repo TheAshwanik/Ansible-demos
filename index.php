@@ -20,6 +20,7 @@
 
             .fb_row{
                 padding:10px;
+                clear:both;
             }
             .fb_row span{
                 margin-left: 20px;
@@ -29,6 +30,7 @@
                 height:90px;
                 width:120px;
                 text-align: center;
+                float:left;
             }
             .video_link img{
                 margin-top: 29px;
@@ -38,10 +40,20 @@
                 color: #6F6F6F;
                 font-size: small;
             }
+            .fb_row .from{
+                float:left
+            }
+            
+            .fb_row .from .name{
+                vertical-align: top;
+            }
+            #older_holder{
+                clear: both;
+            }
         </style>
 
     </head>
-    <body onload="doSearch('kathmandu')">
+    <body onload="doSearch('The Beatles Arrive at JFK airport New York')">
         <script type="text/javascript" src="base.js"></script>
         <div id="search_header">
             Searching 
@@ -49,9 +61,9 @@
         </div>
         <div id="result">
         </div>
-        <span id="older_holder" style="display:none;">
+        <div id="older_holder" style="display:none;">
             <a id="older" href="javascript:showOlder()">Older...</a>
             <span id="status1"><img alt="Loading... "src="img/loading.gif"></span>
-        </span>
+        </div>
     </body>
 </html>
