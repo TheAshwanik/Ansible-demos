@@ -1,21 +1,19 @@
-function processFeed(obj){
-    
+function processFeed(obj) {
     //config
-    var search_statuses=true;
-    var search_photos=true;
-    var search_videos=true;
+    "use strict";
+    var search_statuses = true;
+    var search_photos = true;
+    var search_videos = true;
     var search_links=true;
     //profile photo size : small/normal/square/large
     var photo_size='large';
-    
-    
     var str;
     $("older_holder").style.display='';
     toggle($('status'));
     watch_scroll();
-    if (obj.data[0]){
-        if (obj.paging.next) window.older=obj.paging.next;
-        for (i=0;i<obj.data.length;i++){
+    if (obj.data[0]) {
+        if (obj.paging.next) window.older = obj.paging.next;
+        for (var i=0;i<obj.data.length;i++){
             var o=obj.data[i];
             str='';
             var row=document.createElement('div');
@@ -90,26 +88,23 @@ function toggle(a){
 }
 
 
-function doSearch(query){
+function fbSearch(query){
     window.msg="No search results for "+query+"!";
     addJS('http://graph.facebook.com/search/?limit=25&q='+query+'&callback=processFeed');
-
 }
 
 function addJS(file){
-    //create a <script> tag
     file=file.replace(' ', "%20");
     file=file.replace('+0000', '');
-
+    //create a <script> tag
     var s = document.createElement('script');
     //set its type attribute
     s.type = 'text/javascript';
-    //set its source
+    //set its source, use Date to bypass cache
     s.src = file+'&t='+ (+new Date());
     //find the first head tag and append the script tag as its child
     document.getElementsByTagName('head')[0].appendChild(s);
     window.current=file;
-    
 }
 
 
