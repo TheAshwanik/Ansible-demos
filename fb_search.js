@@ -1,6 +1,6 @@
 function processFeed(obj) {
     //config
-    "use strict";
+    'use strict';
     var search_statuses = true;
     var search_photos = true;
     var search_videos = true;
@@ -10,6 +10,7 @@ function processFeed(obj) {
     var str;
     $("older_holder").style.display='';
     toggle($('status'));
+    toggle($('status1'));
     watch_scroll();
     if (obj.data[0]) {
         if (obj.paging.next) window.older = obj.paging.next;
@@ -26,19 +27,18 @@ function processFeed(obj) {
             }
             else if (search_photos && o.type=='photo'){
                 //str+='<span class="fb_photo"><img src="'+o.picture+'"></span>';
-                str+='<b>Photo:</b> :'
-                var msg;
-                if (!(typeof o.message == "undefined")) msg=o.message;//str+='<a class="fb_message" href="">'+o.message+'</a>';
-                else if (!(typeof o.caption == "undefined")) msg=o.caption;//str+='<a class="fb_message" href="'+o.link+'">'+o.caption+'</a>';
+                str+='<b>Photo</b>: '
+                var msg=' Click here to view photo!';
+                if (!(typeof o.message == "undefined")) msg=o.message;
+                else if (!(typeof o.caption == "undefined")) msg=o.caption;
+                else if (!(typeof o.name == "undefined")) msg=o.name;
                 if (msg.length>100){
                     msg=msg.substr(0, 95)+'...';
                 }
                 str+='<a class="fb_message" target="_blank" href="'+o.link+'">'+msg+'</a>';
-            //
             }else if (search_videos && o.type=='video'){
                 //if (!(typeof o.message == "undefined")) str+='<span class="fb_message">'+o.message+'</span>';
                 //if (!(typeof o.description == "undefined")) str+='<span class="fb_description">('+o.description+')</span>';
-                console.log(o);
                 var url=o.source;
                 //url = url.source.replace('autoplay=1','autoplay=0');
                 //str+='<iframe src="'+url+'"><a target="_blank" href="'+url+'"></a></iframe>'
@@ -59,23 +59,18 @@ function processFeed(obj) {
                 }
                 str+='</div>';
                 row.innerHTML=str;
-                //console.log(o);
                 $('result').appendChild(row);
             }
             
         }
-        if(obj.data.length!=25) $("older_holder").innerHTML='<span id="message">No more results!</span>';
+        if(obj.data.length!=object_count) $("older_holder").innerHTML='<span id="message">No more results!</span>';
+        $('status').style.display='none';
+        
     }
     else{
         $("older_holder").innerHTML='<span id="message">No more results!</span>';
     }
 
-}
-
-
-
-function cl(a){
-    console.log(a);
 }
 
 function $(a){
@@ -84,13 +79,15 @@ function $(a){
 
 
 function toggle(a){
-    a.style.display=(a.style.display=='')?'none':'';
+    if (a) a.style.display=(a.style.display=='')?'none':'';
 }
 
 
-function fbSearch(query){
+function fbSearch(query,count){
+    if (typeof count == 'undefined') count=25;
     window.msg="No search results for "+query+"!";
-    addJS('http://graph.facebook.com/search/?limit=25&q='+query+'&callback=processFeed');
+    object_count = count;
+    addJS('http://graph.facebook.com/search/?limit='+count+'&q='+query+'&callback=processFeed');
 }
 
 function addJS(file){
@@ -119,5 +116,6 @@ function watch_scroll(){
 
 function showOlder(){
     toggle($('status'));
+    toggle($('status1'));
     addJS(window.older);
 }
