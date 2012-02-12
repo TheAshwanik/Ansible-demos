@@ -104,7 +104,6 @@ function addJS(file){
     window.current=file;
 }
 
-
 function watch_scroll(){
     setTimeout('watch_scroll()', 150);
     if ($('status').style.display=='') return;
