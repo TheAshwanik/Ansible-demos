@@ -1,3 +1,4 @@
+var fb_older, fb_current,fb_msg,fb_count;
 function processFeed(obj) {
     //config
     'use strict';
@@ -7,13 +8,13 @@ function processFeed(obj) {
     var search_links=true;
     //profile photo size : small/normal/square/large
     var photo_size='large';
-    var str,o,time;
+    var str,o;
     $("older_holder").style.display='';
     toggle($('status'));
     toggle($('status1'));
     watch_scroll();
     if (obj.data[0]) {
-        if (obj.paging.next) window.older = obj.paging.next;
+        if (obj.paging.next) fb_older = obj.paging.next;
         for (var i=0;i<obj.data.length;i++){
             o=obj.data[i];
             str='';
@@ -66,7 +67,7 @@ function processFeed(obj) {
             }
             
         }
-        if(obj.data.length!=object_count) $("older_holder").innerHTML='<span id="message">No more results!</span>';
+        if(obj.data.length!=fb_count) $("older_holder").innerHTML='<span id="message">No more results!</span>';
         $('status').style.display='none';
         
     }
@@ -85,11 +86,10 @@ function toggle(a){
     if (a) a.style.display=(a.style.display=='')?'none':'';
 }
 
-
 function fbSearch(query,count){
+    fb_count=count;
     if (typeof count == 'undefined') count=25;
-    window.msg="No search results for "+query+"!";
-    object_count = count;
+    fb_msg="No search results for "+query+"!";
     addJS('http://graph.facebook.com/search/?limit='+count+'&q='+query+'&callback=processFeed');
 }
 
@@ -104,7 +104,7 @@ function addJS(file){
     s.src = file+'&t='+ (+new Date());
     //find the first head tag and append the script tag as its child
     document.getElementsByTagName('head')[0].appendChild(s);
-    window.current=file;
+    fb_current=file;
 }
 
 function watch_scroll(){
@@ -113,13 +113,13 @@ function watch_scroll(){
     var wh = window.innerHeight ? window.innerHeight : document.body.clientHeight;
     var total = (document.body.scrollHeight - wh);
     var remain = total - document.body.scrollTop;
-    if (window.current!=window.older && window.older && remain<200) showOlder();
+    if (fb_current!=fb_older && fb_older && remain<200) showOlder();
 }
 
 function showOlder(){
     toggle($('status'));
     toggle($('status1'));
-    addJS(window.older);
+    addJS(fb_older);
 }
 
 function formatApp(app){
