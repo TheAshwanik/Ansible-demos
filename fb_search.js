@@ -7,7 +7,7 @@ function processFeed(obj) {
     var search_links=true;
     //profile photo size : small/normal/square/large
     var photo_size='large';
-    var str;
+    var str,o,time;
     $("older_holder").style.display='';
     toggle($('status'));
     toggle($('status1'));
@@ -15,7 +15,7 @@ function processFeed(obj) {
     if (obj.data[0]) {
         if (obj.paging.next) window.older = obj.paging.next;
         for (var i=0;i<obj.data.length;i++){
-            var o=obj.data[i];
+            o=obj.data[i];
             str='';
             var row=document.createElement('div');
             row.className="fb_row";
@@ -47,15 +47,18 @@ function processFeed(obj) {
                 str+='<b>Video: </b>';        
                 if (!(typeof o.name == "undefined"))  str+='<span class="fb_name">'+o.name+'</span>';
             }else if (search_statuses && o.type=='status'){
-                str+='<span class="fb_message">'+o.message+'</span>';
+                msg=o.message;
+                if (msg.length>900){
+                    msg=msg.substr(0, 900)+'...';
+                }
+                str+='<span class="fb_message">'+msg+'</span>';
             }
-            
             
             if (str!=''){//if there is anything, create row and append string to it
                 str='<span class="from"><a href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank"><img src="http://graph.facebook.com/'+o.from.id+'/picture?type='+photo_size+'"></a><a class="name" href="http://www.facebook.com/profile.php?id='+o.from.id+'" target="_blank">'+o.from.name+'</a></span>'+str;
-                str+='<div class="fb_metadata"><span class="fb_time">'+o.created_time+'</span>';
+                str+='<div class="fb_metadata"><span class="fb_time">'+get_relative_time(format_time(o.created_time))+'</span>';
                 if (!(typeof o.application == "undefined")) {
-                    if (o.application !=null && o.application.name !='Links' && o.application.name !='Likes' && o.application.name !='Photos' ) str+='<span class="via"> via '+o.application.name+'</span>';
+                    if (o.application !=null && o.application.name !='Links' && o.application.name !='Likes' && o.application.name !='Photos' ) str+='<span class="via"> via '+formatApp(o.application.name)+'</span>';
                 }
                 str+='</div>';
                 row.innerHTML=str;
@@ -117,4 +120,44 @@ function showOlder(){
     toggle($('status'));
     toggle($('status1'));
     addJS(window.older);
+}
+
+function formatApp(app){
+    return app.replace('Share_bookmarklet','Share Bookmarklet');
+}
+
+function get_relative_time(time_value) {
+    var time_lt1min = 'less than 1 min ago';
+    var time_1min = '1 min ago';
+    var time_mins = '%1 mins ago';
+    var time_1hour = '1 hour ago';
+    var time_hours = '%1 hours ago';
+    var time_1day = '1 day ago';
+    var time_days = '%1 days ago';
+    var parsed_date = Date.parse(time_value);
+    var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
+    var delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
+    delta = delta + (relative_to.getTimezoneOffset() * 60);
+    if (delta < 60) {
+        return time_lt1min;
+    } else if(delta < 120) {
+        return time_1min;
+    } else if(delta < (60*60)) {
+        return time_mins.replace('%1', (parseInt(delta / 60)).toString());
+    } else if(delta < (120*60)) {
+        return time_1hour;
+    } else if(delta < (24*60*60)) {
+        return time_hours.replace('%1', (parseInt(delta / 3600)).toString());
+    } else if(delta < (48*60*60)) {
+        return time_1day;
+    } else {
+        return time_days.replace('%1', (parseInt(delta / 86400)).toString());
+    }
+}
+
+function format_time(time_value){
+    var time = new Date(time_value);
+    time=time.toUTCString();
+    var values = time.split(" ");
+    return values[1] + " " + values[2] + ", " + values[4] + " " + values[3];
 }
