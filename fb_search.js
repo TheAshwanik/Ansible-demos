@@ -9,9 +9,9 @@ function processFeed(obj) {
     //profile photo size : small/normal/square/large
     var photo_size='large';
     var str,o;
-    $("older_holder").style.display='';
-    toggle($('status'));
-    toggle($('status1'));
+    dgbi("older_holder").style.display='';
+    toggle(dgbi('status'));
+    toggle(dgbi('status1'));
     watch_scroll();
     if (obj.data[0]) {
         if (obj.paging.next) fb_older = obj.paging.next;
@@ -63,21 +63,21 @@ function processFeed(obj) {
                 }
                 str+='</div>';
                 row.innerHTML=str;
-                $('result').appendChild(row);
+                dgbi('result').appendChild(row);
             }
             
         }
-        if(obj.data.length!=fb_count) $("older_holder").innerHTML='<span id="message">No more results!</span>';
-        $('status').style.display='none';
+        if(obj.data.length!=fb_count) dgbi("older_holder").innerHTML='<span id="message">No more results!</span>';
+        dgbi('status').style.display='none';
         
     }
     else{
-        $("older_holder").innerHTML='<span id="message">No more results!</span>';
+        dgbi("older_holder").innerHTML='<span id="message">No more results!</span>';
     }
 
 }
 
-function $(a){
+function dgbi(a){
     return document.getElementById(a);
 }
 
@@ -109,7 +109,7 @@ function addJS(file){
 
 function watch_scroll(){
     setTimeout('watch_scroll()', 150);
-    if ($('status').style.display=='') return;
+    if (dgbi('status').style.display=='') return;
     var wh = window.innerHeight ? window.innerHeight : document.body.clientHeight;
     var total = (document.body.scrollHeight - wh);
     var remain = total - document.body.scrollTop;
@@ -117,8 +117,8 @@ function watch_scroll(){
 }
 
 function showOlder(){
-    toggle($('status'));
-    toggle($('status1'));
+    toggle(dgbi('status'));
+    toggle(dgbi('status1'));
     addJS(fb_older);
 }
 
