@@ -1,0 +1,22 @@
+---
+- name: Create EC2 instances
+  ec2:
+    assign_public_ip: yes
+    group_id: "{{ ec2_security_group }}"
+    instance_type: "{{ ec2_instance_type }}"
+    image: "{{ ami_id }}"
+    region: "{{ ec2_region }}"
+    exact_count: "{{ ec2_instance_count }}"
+    count_tag:
+      Name: "{{ ec2_name_tag }}"
+    instance_tags:
+      Name: "{{ ec2_name_tag }}"
+      Provisioner: Ansible
+    vpc_subnet_id: "{{ aws_subnet_id | default(omit) }}"
+    volumes:
+      - device_name: /dev/sda1
+        volume_type: gp2
+        volume_size: 20
+        delete_on_termination: true
+    user_data: "{{ lookup('template', 'userdata_linux.txt.j2') }}"
+  register: ec2

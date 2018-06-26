@@ -1,0 +1,8 @@
+---
+- name: Provision Security Group
+  hosts: localhost
+  vars_files:
+    vars/provision_sg_vars.yml
+  roles:
+    - provision-sg
+

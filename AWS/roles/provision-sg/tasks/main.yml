@@ -1,0 +1,7 @@
+---
+# tasks file for provision_sg
+
+#Create SG
+- name: Create SG
+  include_tasks: provision_sg.yml
+

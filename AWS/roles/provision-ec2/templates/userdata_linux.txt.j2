@@ -1,0 +1,7 @@
+#!/bin/bash
+useradd -m -p $(echo "{{ ansible_password }}" | openssl passwd -1 -stdin) ansible_user
+usermod -a -G sudo ansible_user
+usermod -a -G wheel ansible_user
+sed -i 's/PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+service ssh restart
+service sshd restart

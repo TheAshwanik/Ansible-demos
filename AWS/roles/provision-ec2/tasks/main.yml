@@ -1,0 +1,4 @@
+---
+# tasks file for provision-ec2
+- name: Provision RHEL EC2 Instances
+  include_tasks: provision_linux_ec2_instanes.yml

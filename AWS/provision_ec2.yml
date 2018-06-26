@@ -1,0 +1,8 @@
+---
+- name: Provision EC2 Instances
+  hosts: localhost
+  vars_files:
+    vars/provision_ec2_vars.yml
+  roles:
+    - provision-ec2
+
