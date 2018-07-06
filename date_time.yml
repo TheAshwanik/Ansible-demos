@@ -1,0 +1,4 @@
+---
+- hosts: hosts
+  tasks:  
+   - debug: msg="Current date on {{ansible_nodename}} is {{ansible_date_time.date}} and time is {{ansible_date_time.hour}}:{{ansible_date_time.minute}}"

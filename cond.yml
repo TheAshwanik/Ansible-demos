@@ -1,0 +1,10 @@
+---
+- hosts: AmazonLinux
+  become: yes
+  tasks:
+   - name: If OS Redhat install apache
+     yum:
+      name: httpd
+      state: latest
+     when: ansible_os_family=="RedHat"
+     

@@ -1,0 +1,11 @@
+---
+- hosts: WebServer
+  tasks:
+   - name: craete multiple files - {{ item }}
+     file:
+      state: touch
+      path: /home/ansible/{{ item }}
+     with_items:
+      - file_no_1
+      - file_no_2
+      - file_no_3

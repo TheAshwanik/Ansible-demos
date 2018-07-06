@@ -1,0 +1,11 @@
+---
+ - hosts: prod
+   become: yes
+   tasks: 
+    - name: running a command on hosts and reflecting MOTD using playbook on master
+      shell: cat /etc/motd.conf
+      register: motd_contents
+    - debug: msg="stdout={{motd_contents.stdout}}"
+    - debug: msg="stderr={{motd_contents.stderr}}"
+    - debug: msg="no Message of the day"
+      when: motd_contents.stdout==""

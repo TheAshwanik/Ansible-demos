@@ -1,0 +1,9 @@
+---
+- hosts: WebServer
+  tasks:
+   - name: Adding a line in file named testfile
+     lineinfile:
+       path: /home/ansible/host.conf
+       regexp: ^Hostname=.*
+       insertafter: ^#Hostname=
+       line: Hostname= {{ ansible_hostname }}

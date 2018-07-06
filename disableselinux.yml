@@ -1,0 +1,6 @@
+---
+ - hosts: web
+   become: yes
+   tasks:
+    - name: Disable selinux using command module
+      command: setenforce permissive
