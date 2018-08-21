@@ -1,0 +1,8 @@
+---
+- name: Cleanup AWS Resources
+  hosts: localhost
+  vars_files:
+    vars/cleanup_aws_vars.yml
+  roles:
+    - cleanup-aws
+

@@ -1,0 +1,3 @@
+ec2_name_tag: "{{ ec2_name_tag_choice | default('Ansible_Demo') }}"
+ec2_region: "{{ ec2_region_choice | default('us-east-1') }}"
+

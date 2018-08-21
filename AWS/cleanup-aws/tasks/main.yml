@@ -1,0 +1,7 @@
+---
+# tasks file for cleanup_aws
+
+#Register Route 53
+- name: Cleanup AWS resources
+  include_tasks: cleanup_aws.yml
+

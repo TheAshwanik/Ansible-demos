@@ -1,0 +1,34 @@
+---
+- name: Gather the instance IPs
+  ec2_instance_facts:
+    region: "{{ ec2_region }}"
+    filters:
+      instance-state-name: running
+      "tag:Name": "{{ ec2_name_tag }}"
+      "tag:Provisioner": "Ansible"
+  register: ec2
+
+- debug:
+    var: ec2
+
+- name: Terminate Existing EC2 Instances if found
+  ec2:
+    instance_ids: "{{ item.instance_id }}"
+    state: absent
+    region: "{{ ec2_region }}"
+    wait: yes
+  with_items: "{{ ec2.instances }}"
+
+
+- name: Delete Security Group for {{ ec2_name_tag }} WebServers
+  ec2_group:
+    name: "{{ ec2_name_tag }}_SG"
+    vpc_id: "{{ aws_vpc_id }}"
+    description: "Security Group for {{ ec2_name_tag }} WebServers"
+    region: "{{ ec2_region }}"
+    state: absent
+
+
+
+
+
