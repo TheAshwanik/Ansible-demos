@@ -1,0 +1,34 @@
+---
+- name: Configure Newly Provisioned Webserver(s)
+  hosts: localhost
+  vars_files:
+    vars/configure_webserver_vars.yml
+  tasks:
+  - name: Gather the instance IPs
+    ec2_instance_facts:
+      region: "{{ ec2_region }}"
+      filters:
+        instance-state-name: ["pending","running"]
+        "tag:Name": "{{ ec2_name_tag }}"
+        "tag:Provisioner": "Ansible"
+    register: ec2
+    check_mode: no
+
+  - name: Create Inventory Group to login dynamically to EC2 Instance
+    add_host: 
+      hostname: "{{ item.public_ip_address }}"
+      groupname: ec2_server
+    loop: "{{ ec2.instances }}"
+
+- name: Configure Newly Provisioned Webserver(s)
+  hosts: ec2_server
+  become: true
+  gather_facts: false
+  vars:
+    ansible_user: ansible_user
+    host_key_checking: false
+  vars_files:
+    vars/configure_webserver_vars.yml
+  roles:
+    - configure-webserver
+

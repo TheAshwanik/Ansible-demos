@@ -1,0 +1,7 @@
+---
+# tasks file for configure webserver
+
+#configure linux webserver
+- name: Configure Linux Webserver
+  include_tasks: configure_linux_webserver.yml
+

@@ -1,0 +1,29 @@
+---
+# tasks file for apache
+- name: Wait for system to become reachable over ssh
+  wait_for_connection:
+    timeout: 120
+
+- name: Ensure httpd packages are present
+  yum:
+    name: "{{ httpd_packages }}"
+    state: present
+    use_backend: yum
+  notify: restart-apache-service
+
+- name: Ensure latest httpd.conf file is present
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify: restart-apache-service
+
+- name: Ensure latest index.html file is present
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+
+- name: Ensure httpd service is started and enabled
+  service:
+    name: httpd
+    state: started
+    enabled: yes
