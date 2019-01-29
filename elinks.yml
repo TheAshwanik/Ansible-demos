@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: yes
+  serial: "30%" 
+  tasks:
+   - name: Install elinks in batch
+     yum: name=elinks state=absent

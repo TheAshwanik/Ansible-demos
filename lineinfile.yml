@@ -1,0 +1,9 @@
+---
+ - hosts: prod
+   tasks:
+    - name: inserting a line in newfile.txt
+      lineinfile:
+       path: /home/ansible/ansible.txt
+       regexp: ^Hostname
+       insertafter: ^#Hostname
+       line: The anible hostname is {{ ansible_hostname }}

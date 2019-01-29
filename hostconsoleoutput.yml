@@ -1,0 +1,9 @@
+---
+ - hosts: prod
+   become: yes
+   tasks: 
+    - name: running a command on hosts and reflecting DNS info using playbook on master
+      shell: cat /etc/resolv.conf
+      register: hello
+    - debug: msg="stdout={{hello.stdout}}"
+    - debug: msg="stderr={{hello.stderr}}"

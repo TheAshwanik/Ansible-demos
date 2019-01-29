@@ -1,0 +1,8 @@
+---
+- hosts: WebServer
+  tasks:
+   - debug: 
+      msg: "{{ item }}"
+     with_file:
+      - first_file
+      - second_file

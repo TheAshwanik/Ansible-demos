@@ -1,0 +1,7 @@
+--- 
+ - hosts: prod
+   tasks:
+    - name: create a file using shell module
+      shell: echo "creating a file using playbook" >> newfile.txt
+      shell: echo "Hostname" >> ansible.txt
+    
