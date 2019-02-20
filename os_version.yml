@@ -1,0 +1,4 @@
+---
+- hosts: hosts
+  tasks:
+   - debug: msg="The OS Distribution is {{ansible_distribution}}-{{ansible_distribution_major_version}}"
